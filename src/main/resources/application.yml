@@ -5,10 +5,26 @@ server:
     name: moais
 
 spring:
-
   # DB
   datasource:
     url: jdbc:mariadb://${DOCKER_DB_HOST}:${DOCKER_DB_PORT}/${MOAIS_DB}
     driver-class-name: org.mariadb.jdbc.Driver
     username: ${DOCKER_DB_USERNAME}
     password: ${DOCKER_DB_PASSWORD}
+
+  # JPA
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#    properties:
+#      hibernate:
+#        format_sql: true
+
+jwt:
+  secret_key: ${Jwt_Secret_Key}
+
+springdoc:
+  api-docs:
+    path: /mas/swagger/api-docs
+  swagger-ui:
+    path: /mas/swagger.html
