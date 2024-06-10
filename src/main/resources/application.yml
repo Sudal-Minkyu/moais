@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+  application:
+    name: moais
+
+spring:
+
+  # DB
+  datasource:
+    url: jdbc:mariadb://${DOCKER_DB_HOST}:${DOCKER_DB_PORT}/${MOAIS_DB}
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: ${DOCKER_DB_USERNAME}
+    password: ${DOCKER_DB_PASSWORD}
