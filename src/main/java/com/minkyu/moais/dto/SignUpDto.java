@@ -18,13 +18,13 @@ public class SignUpDto {
     private String password;
 
     @NotBlank(message = "닉네임은 필수 입력값 입니다.")
-    private String nickname;
+    private String userNickname;
 
-    @ConstructorProperties({"userId", "password", "nickname"})
-    public SignUpDto(String userId, String password, String nickname) {
+    @ConstructorProperties({"userId", "password", "userNickname"})
+    public SignUpDto(String userId, String password, String userNickname) {
         this.userId = userId;
         this.password = password;
-        this.nickname = nickname;
+        this.userNickname = userNickname;
     }
 
 }

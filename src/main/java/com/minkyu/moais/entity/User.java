@@ -1,12 +1,9 @@
 package com.minkyu.moais.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Getter
+@Data
 @Entity
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Table(name="mas_user")
@@ -23,14 +20,18 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "nickname", unique = true)
-    private String nickname;
+    @Column(name = "user_nickname", unique = true)
+    private String userNickname;
+
+    @Column(name = "user_state")
+    private Integer userState; // 회원상태(정상:1, 탈퇴:2) -> 기본값 1
 
     @Builder
-    public User(String userId, String password, String nickname, String regNo) {
+    public User(String userId, String password, String userNickname, Integer userState) {
         this.userId = userId;
         this.password = password;
-        this.nickname = nickname;
+        this.userNickname = userNickname;
+        this.userState = userState;
     }
 
 }

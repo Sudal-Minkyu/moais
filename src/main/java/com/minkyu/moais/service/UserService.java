@@ -9,7 +9,6 @@ import com.minkyu.moais.handler.exception.CheckSigninException;
 import com.minkyu.moais.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -52,14 +51,15 @@ public class UserService {
         User user = User.builder()
                 .userId(signUpDto.getUserId())
                 .password(passwordEncoder.encode(signUpDto.getPassword()))
-                .nickname(signUpDto.getNickname())
+                .userNickname(signUpDto.getUserNickname())
+                .userState(1)
                 .build();
 
         userRepository.save(user);
 
         data.put("user", user.getUserId());
 
-        log.info("'"+user.getNickname()+"' 고객님 회원가입 완료");
+        log.info("'"+user.getUserNickname()+"' 고객님 회원가입 완료");
 
         return ResponseEntity.ok(dataResponse.success(data));
     }
@@ -73,6 +73,10 @@ public class UserService {
         User user = userRepository.findByUserId(loginDto.getUserId())
                 .orElseThrow(CheckSigninException::new);
 
+        if(user.getUserState() == 2) {
+            return ResponseEntity.ok(dataResponse.fail("400","탈퇴한 회원입니다."));
+        }
+
         var matches = passwordEncoder.matches(loginDto.getPassword(), user.getPassword());
         if (!matches) {
             throw new CheckSigninException();
@@ -80,12 +84,12 @@ public class UserService {
 
         SecretKey key = Keys.hmacShaKeyFor(jwtConfig.getSecretKey());
 
-//        Instant now = Instant.now();
+        Instant now = Instant.now();
         String jws = Jwts.builder()
                 .subject(String.valueOf(user.getAdminId()))
                 .signWith(key)
-//                .issuedAt(Date.from(now))
-//                .expiration(Date.from(now.plus(5, ChronoUnit.MINUTES)))
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(now.plus(10, ChronoUnit.MINUTES)))
                 .compact();
 
 //        log.info("엑세스 토큰 : "+jws);
@@ -93,7 +97,7 @@ public class UserService {
 //        log.info("로그인 비밀번호 : "+loginDto.getPassword());
 
         data.put("accessToken", jws);
-        data.put("text", "유효기간은 5분입니다.");
+        data.put("text", "토큰 유효기간은 10분입니다.");
 
         return ResponseEntity.ok(dataResponse.success(data));
     }

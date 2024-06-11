@@ -22,10 +22,13 @@ public class Todo {
     @Column(name = "admin_id")
     private Long adminId;
 
+    @Column(name = "td_yyyymmdd")
+    private String tdYyyymmdd; // 선택된날짜
+
     @Column(name = "td_comment")
     private String tdComment; // 내용
 
     @Column(name = "td_state")
-    private Integer tdState; // 상태 : 1(할일), 2(진행중), 3(완료), 4(대기)
+    private Integer tdState; // 상태 : 1(할일), 2(진행중), 3(완료), 4(대기) -> 기본값 1
 
 }
