@@ -85,6 +85,7 @@ public class TodoService {
             data.put("result","TODO 등록 완료");
         } else {
             errmsg = "존재하지 않은 회원입니다.";
+            log.error(errmsg);
             return ResponseEntity.ok(dataResponse.fail("400",errmsg));
         }
 
@@ -103,6 +104,14 @@ public class TodoService {
         Optional<Todo> optionalTodo = todoRepository.findById(todoId);
         if(optionalTodo.isPresent()) {
             if(optionalTodo.get().getAdminId().equals(adminId)) {
+
+                if(tdState == 4 && optionalTodo.get().getTdState() != 2) {
+                    // 대기상태를 부여했지만, 해당 상태가 진행중인 상태가 아닐때 반환
+                    errmsg = "진행중인 상태에서만 대기상태를 할 수 있습니다.";
+                    log.warn(errmsg);
+                    return ResponseEntity.ok(dataResponse.fail("400",errmsg));
+                }
+
                 optionalTodo.get().setTdState(tdState);
                 Todo saveTOdo = todoRepository.save(optionalTodo.get());
 
@@ -111,10 +120,12 @@ public class TodoService {
                 data.put("result","TODO 수정 완료");
             } else {
                 errmsg = "해당 게시물을 등록한 회원이 아닙니다.";
+                log.error(errmsg);
                 return ResponseEntity.ok(dataResponse.fail("400",errmsg));
             }
         } else {
             errmsg = "존재하지 않은 TODO 입니다.";
+            log.error(errmsg);
             return ResponseEntity.ok(dataResponse.fail("400",errmsg));
         }
 

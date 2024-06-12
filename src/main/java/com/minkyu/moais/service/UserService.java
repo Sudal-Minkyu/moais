@@ -57,7 +57,7 @@ public class UserService {
 
         userRepository.save(user);
 
-        data.put("user", user.getUserId());
+        data.put("nickname", user.getUserNickname());
 
         log.info("'"+user.getUserNickname()+"' 고객님 회원가입 완료");
 
@@ -73,7 +73,10 @@ public class UserService {
         User user = userRepository.findByUserId(loginDto.getUserId())
                 .orElseThrow(CheckSigninException::new);
 
+        String errmsg;
         if(user.getUserState() == 2) {
+            errmsg = "탈퇴한 회원입니다.";
+            log.error(errmsg);
             return ResponseEntity.ok(dataResponse.fail("400","탈퇴한 회원입니다."));
         }
 

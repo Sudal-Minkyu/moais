@@ -52,12 +52,13 @@ public class InfoService {
             optionalUser.get().setUserState(2);
             userRepository.save(optionalUser.get());
             data.put("result","회원탈퇴 완료");
+
+            log.info("회원탈퇴 완료");
         } else {
             errmsg = "존재하지 않은 회원입니다.";
+            log.error(errmsg);
             return ResponseEntity.ok(dataResponse.fail("400",errmsg));
         }
-
-
 
         return ResponseEntity.ok(dataResponse.success(data));
     }
