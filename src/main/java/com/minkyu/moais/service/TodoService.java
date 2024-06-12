@@ -1,6 +1,5 @@
 package com.minkyu.moais.service;
 
-import com.minkyu.moais.common.CommonUtil;
 import com.minkyu.moais.common.DataResponse;
 import com.minkyu.moais.dto.TodoDto;
 import com.minkyu.moais.dto.data.TodoListDto;
@@ -80,9 +79,10 @@ public class TodoService {
 
             Todo saveTOdo = todoRepository.save(todo);
 
-            log.info("TODO 등록 완료 : "+saveTOdo.getTodoId());
-
-            data.put("result","TODO 등록 완료");
+            String result = "TODO 등록 완료";
+            log.info(result+" : "+saveTOdo.getTodoId());
+            data.put("result",result);
+            data.put("todoId",saveTOdo.getTodoId());
         } else {
             errmsg = "존재하지 않은 회원입니다.";
             log.error(errmsg);
@@ -115,9 +115,10 @@ public class TodoService {
                 optionalTodo.get().setTdState(tdState);
                 Todo saveTOdo = todoRepository.save(optionalTodo.get());
 
-                log.info("TODO 수정 완료 : "+saveTOdo.getTodoId());
-
-                data.put("result","TODO 수정 완료");
+                String result = "TODO 수정 완료";
+                log.info(result+" : "+saveTOdo.getTodoId());
+                data.put("result",result);
+                data.put("todoId",saveTOdo.getTodoId());
             } else {
                 errmsg = "해당 게시물을 등록한 회원이 아닙니다.";
                 log.error(errmsg);

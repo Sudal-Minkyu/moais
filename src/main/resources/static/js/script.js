@@ -82,6 +82,8 @@ function login() {
             alert(res.data.err_msg);
         } else {
             console.log(res.data.response.accessToken);
+
+            // 로컬저장소에 넣기
             alert('로그인 완료');
         }
     })

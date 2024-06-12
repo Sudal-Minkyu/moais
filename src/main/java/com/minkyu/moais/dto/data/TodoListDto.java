@@ -9,9 +9,9 @@ public class TodoListDto {
 
     private String tdComment; // 내용
 
-    private Integer tdState; // 상태
+    private String tdState; // 상태
 
-    public TodoListDto(String tdYyyymmdd, String tdComment, Integer tdState) {
+    public TodoListDto(String tdYyyymmdd, String tdComment, String tdState) {
         this.tdYyyymmdd = tdYyyymmdd;
         this.tdComment = tdComment;
         this.tdState = tdState;

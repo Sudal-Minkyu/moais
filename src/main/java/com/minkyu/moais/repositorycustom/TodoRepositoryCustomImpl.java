@@ -4,14 +4,11 @@ import com.minkyu.moais.dto.data.TodoListDto;
 import com.minkyu.moais.entity.QTodo;
 import com.minkyu.moais.entity.Todo;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.ChronoField;
 import java.util.List;
 
 @Repository
@@ -32,7 +29,11 @@ public class TodoRepositoryCustomImpl extends QuerydslRepositorySupport implemen
                 .select(Projections.constructor(TodoListDto.class,
                         todo.tdYyyymmdd,
                         todo.tdComment,
-                        todo.tdState
+                        new CaseBuilder()
+                                .when(todo.tdState.eq(2)).then("진행중")
+                                .when(todo.tdState.eq(3)).then("완료")
+                                .when(todo.tdState.eq(4)).then("대기")
+                                .otherwise("할일")
                 ));
 
         return query.fetch();
