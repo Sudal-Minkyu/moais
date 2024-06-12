@@ -23,7 +23,7 @@ public class Todo {
     private Long adminId;
 
     @Column(name = "td_yyyymmdd")
-    private String tdYyyymmdd; // 선택된날짜
+    private String tdYyyymmdd; // 등록한 날짜
 
     @Column(name = "td_comment")
     private String tdComment; // 내용

@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface TodoRepositoryCustom {
 
-    List<TodoListDto> findByTodoList(Long adminId, String yyyymm);
+    List<TodoListDto> findByTodoList(Long adminId);
 
 }

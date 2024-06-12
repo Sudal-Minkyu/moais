@@ -27,8 +27,8 @@ public class TodoRestController {
 
     @Operation(summary = "Todo 조회 API", description = "등록한 TodoList를 조회한다.")
     @GetMapping("/list")
-    public ResponseEntity<Map<String,Object>> todoList(@RequestParam(value="yyyymm", defaultValue = "") String yyyymm, HttpServletRequest request) {
-        return todoService.todoList(yyyymm, request);
+    public ResponseEntity<Map<String,Object>> todoList(HttpServletRequest request) {
+        return todoService.todoList(request);
     }
 
     @Operation(summary = "Todo 추가 API", description = "등록한 Todo를 추가한다.")

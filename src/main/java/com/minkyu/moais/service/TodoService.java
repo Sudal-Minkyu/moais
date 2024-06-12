@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,14 +39,14 @@ public class TodoService {
         this.dataResponse = new DataResponse();
     }
 
-    public ResponseEntity<Map<String, Object>> todoList(String yyyymm, HttpServletRequest request) {
+    public ResponseEntity<Map<String, Object>> todoList(HttpServletRequest request) {
         log.info("todoList 호출");
 
         HashMap<String, Object> data = new HashMap<>();
 
         Long adminId = (Long) request.getAttribute("adminId");
 
-        List<TodoListDto> todoListDtos = todoRepository.findByTodoList(adminId, yyyymm);
+        List<TodoListDto> todoListDtos = todoRepository.findByTodoList(adminId);
 
         if(todoListDtos.size() == 0) {
             data.put("result", "데이터가 존재하지 않습니다.");
@@ -65,16 +67,14 @@ public class TodoService {
         Optional<User> optionalUser = userRepository.findById(adminId);
         if(optionalUser.isPresent()) {
 
-            // 주민등록번호 형식 체크
-            if(!CommonUtil.isCheckYyyymmdd(todoDto.getTdYyyymmdd())) {
-                errmsg = "날짜 형식에 맞지 않습니다.";
-                log.error("에러 반환 : "+errmsg);
-                return ResponseEntity.ok(dataResponse.fail("400", errmsg));
-            }
+            // 현재 날짜 가져오기
+            LocalDate currentDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = currentDate.format(formatter);
 
             Todo todo = new Todo();
             todo.setAdminId(optionalUser.get().getAdminId());
-            todo.setTdYyyymmdd(todoDto.getTdYyyymmdd());
+            todo.setTdYyyymmdd(formattedDate);
             todo.setTdComment(todoDto.getTdComment());
             todo.setTdState(1);
 
