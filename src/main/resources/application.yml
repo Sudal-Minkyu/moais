@@ -5,12 +5,20 @@ server:
     name: moais
 
 spring:
-  # DB
+
+  # H2 DB
   datasource:
-    url: jdbc:mariadb://${DOCKER_DB_HOST}:${DOCKER_DB_PORT}/${MOAIS_DB}
-    driver-class-name: org.mariadb.jdbc.Driver
-    username: ${DOCKER_DB_USERNAME}
-    password: ${DOCKER_DB_PASSWORD}
+    url: jdbc:h2:mem:mas
+    driver-class-name: org.h2.Driver
+    username: mas
+    password:
+
+  # MariaDB
+#  datasource:
+#    url: jdbc:mariadb://${DOCKER_DB_HOST}:${DOCKER_DB_PORT}/${MOAIS_DB}
+#    driver-class-name: org.mariadb.jdbc.Driver
+#    username: ${DOCKER_DB_USERNAME}
+#    password: ${DOCKER_DB_PASSWORD}
 
   # JPA
 #  jpa:
@@ -21,7 +29,8 @@ spring:
 #        format_sql: true
 
 jwt:
-  secret_key: ${Jwt_Secret_Key}
+  secret_key: "ttCyuEwNHcKOR/WQTMJSZkLnzicC9Fu74nog3/tMcts="
+#  secret_key: ${Jwt_Secret_Key}
 
 springdoc:
   api-docs:

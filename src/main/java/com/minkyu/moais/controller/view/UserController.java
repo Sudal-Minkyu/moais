@@ -20,9 +20,4 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("home")
-    public String home() {
-        return "home";
-    }
-
 }
